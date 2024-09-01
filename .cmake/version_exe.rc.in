@@ -1,6 +1,6 @@
 1 VERSIONINFO
- FILEVERSION ${GIT_TAG_WITH_COMMA},${GIT_COMMIT_COUNT}
- PRODUCTVERSION ${GIT_TAG_WITH_COMMA},${GIT_COMMIT_COUNT}
+ FILEVERSION ${PROJECT_VERSION}
+ PRODUCTVERSION ${PROJECT_VERSION}
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -17,12 +17,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "NJUPT - Students' Association for Science and Technology"
             VALUE "FileDescription", "SAST Evento"
-            VALUE "FileVersion", "${GIT_SEMVER}.${GIT_COMMIT_COUNT}"
+            VALUE "FileVersion", "${PROJECT_VERSION}"
             VALUE "InternalName", "${PROJECT_NAME}"
             VALUE "LegalCopyright", "Copyright (C) 2024 NJUPT-SAST. All rights reserved."
             VALUE "OriginalFilename", "${PROJECT_NAME}.exe"
             VALUE "ProductName", "${PROJECT_NAME}"
-            VALUE "ProductVersion", "${GIT_SEMVER}.0"
+            VALUE "ProductVersion", "${PROJECT_VERSION}"
         END
     END
     BLOCK "VarFileInfo"

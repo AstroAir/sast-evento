@@ -1,4 +1,4 @@
-name: Build
+name: MacOS
 # Complete packaging in the future
 
 on:
@@ -17,21 +17,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-24.04, windows-latest]
-        # how to use macos ???
+        os: [macos-latest]
+        qt_ver: [6.6.3]
+        qt_arch: [clang_64]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
           submodules: recursive
-
-    - name: Set up GCC
-      if: matrix.os == 'ubuntu-24.04'
-      uses: egor-tensin/setup-gcc@v1
-      with:
-        version: 14
-        platform: x64
 
     - name: Setup Rust toolchain
       uses: moonrepo/setup-rust@v1
@@ -51,6 +45,13 @@ jobs:
           !${{ github.workspace }}/build/corrosion/**/target/**/incremental
         key: corrosion-${{ runner.os }}
 
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: ${{ matrix.qt_ver }}
+        cache: true
+        arch: ${{ matrix.qt_arch }}
+
     - name: Setup CMake
       uses: lukka/get-cmake@latest
 
@@ -65,10 +66,3 @@ jobs:
       with:
         configurePreset: 'native'
         buildPreset: 'native-release'
-
-    - name: Package with Inno-Setup
-      if: matrix.os == 'windows-latest'
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
-      with:
-        path: ./action-cli/InstallerScript.iss
-        options: /O+

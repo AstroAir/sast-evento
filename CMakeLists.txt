@@ -7,10 +7,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/.cmake/)
 include(Version)
 
-if (APPLE)
-  set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "" FORCE)
-endif()
-
 if (POLICY CMP0167)
   cmake_policy(SET CMP0167 OLD)
 endif()
@@ -21,7 +17,7 @@ option(EVENTO_EMBED_RESOURCES OFF "Request slint embed resources")
 set(SLINT_STYLE "material" CACHE STRING "Slint style" FORCE)
 
 if (WIN32)
-  set(VERSION_RC_PATH ${CMAKE_SOURCE_DIR}/SAST_Evento.rc)
+  set(VERSION_RC_PATH ${CMAKE_SOURCE_DIR}/sast-evento.rc)
   configure_file(
       ${CMAKE_SOURCE_DIR}/.cmake/version_exe.rc.in
       ${VERSION_RC_PATH}

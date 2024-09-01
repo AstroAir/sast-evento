@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SAST_Evento"
-#define MyAppVersion "1.0"
+#define MyAppVersion "${PROJECT_VERSION}"
 #define MyAppPublisher "NJUPT-SAST"
-#define MyAppURL "https://www.example.com/"
+#define MyAppURL "https://sast.fun/"
 #define MyAppExeName "sast-evento.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".myp"

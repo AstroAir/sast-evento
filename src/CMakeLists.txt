@@ -1,4 +1,4 @@
-add_executable(${PROJECT_NAME})
+add_executable(${PROJECT_NAME} ${VERSION_RC_PATH})
 
 file(GLOB_RECURSE SOURCES *.cc *.h *.hpp)
 
