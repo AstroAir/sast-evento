@@ -20,7 +20,7 @@ endif()
 
 slint_target_sources(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/ui/app.slint)
 
-if(EVENTO_EMBED_RESOURCES)
+if (EVENTO_EMBED_RESOURCES)
   set_property(TARGET ${PROJECT_NAME} PROPERTY SLINT_EMBED_RESOURCES embed-files)
 endif(EVENTO_EMBED_RESOURCES)
 

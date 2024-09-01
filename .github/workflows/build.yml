@@ -1,7 +1,10 @@
 name: Build
 # Complete packaging in the future
 
-on: 
+on:
+  push:
+    branches:
+      - feat/package
   workflow_dispatch:
 
 jobs:
@@ -62,3 +65,10 @@ jobs:
       with:
         configurePreset: 'native'
         buildPreset: 'native-release'
+
+    - name: Package with Inno-Setup
+      if: matrix.os == 'windows-latest'
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+      with:
+        path: ./action-cli/InstallerScript.iss
+        options: /O+
