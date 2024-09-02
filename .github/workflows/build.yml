@@ -1,10 +1,7 @@
-name: MacOS
+name: Build
 # Complete packaging in the future
 
-on:
-  push:
-    branches:
-      - feat/package
+on: 
   workflow_dispatch:
 
 jobs:
@@ -17,15 +14,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
-        qt_ver: [6.6.3]
-        qt_arch: [clang_64]
+        os: [ubuntu-24.04, windows-latest]
+        # how to use macos ???
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
           submodules: recursive
+
+    - name: Set up GCC
+      if: matrix.os == 'ubuntu-24.04'
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: 14
+        platform: x64
 
     - name: Setup Rust toolchain
       uses: moonrepo/setup-rust@v1
@@ -45,13 +48,6 @@ jobs:
           !${{ github.workspace }}/build/corrosion/**/target/**/incremental
         key: corrosion-${{ runner.os }}
 
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: ${{ matrix.qt_ver }}
-        cache: true
-        arch: ${{ matrix.qt_arch }}
-
     - name: Setup CMake
       uses: lukka/get-cmake@latest
 
@@ -61,10 +57,11 @@ jobs:
         vcpkgConfigurationJsonGlob: 'vcpkg-configuration.json'
         vcpkgJsonGlob: 'vcpkg.json'
 
-    - name: setup Ninja
-      uses: ashutoshvarma/setup-ninja@v1.1
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
       with:
-        version: "1.11.1"
+        version: 6.6.3
+        cache: true
 
     - name: Build with CMake
       uses: lukka/run-cmake@v10
