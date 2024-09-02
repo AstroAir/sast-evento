@@ -65,6 +65,7 @@ jobs:
       uses: lukka/run-cmake@v10
       with:
         configurePreset: 'msvc-x64'
+        buildPreset: 'native-release'
 
     - name: Package with Inno-Setup
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2

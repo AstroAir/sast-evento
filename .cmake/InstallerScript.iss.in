@@ -49,22 +49,22 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\..\build\src\Debug\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_atomic-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_container-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_context-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_coroutine-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_date_time-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_filesystem-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_regex-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_system-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\boost_url-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\fmtd.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\libcrypto-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\libssl-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\sast-link.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\slint_cpp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Debug\spdlogd.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_atomic-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_container-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_context-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_coroutine-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_date_time-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_filesystem-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_regex-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_system-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\boost_url-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\fmtd.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\libcrypto-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\libssl-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\sast-link.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\slint_cpp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\build\src\Release\spdlogd.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\..\build\src\Tray\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
