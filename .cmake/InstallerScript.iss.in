@@ -6,9 +6,11 @@
 #define MyAppPublisher "NJUPT-SAST"
 #define MyAppURL "https://sast.fun/"
 #define MyAppExeName "sast-evento.exe"
+#define MyAppTrayExeName "sast-evento-tray.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
+#define MyAppFileDir "dist"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -49,23 +51,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\..\build\src\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_atomic-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_container-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_context-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_coroutine-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_date_time-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_filesystem-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_regex-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_system-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\boost_url-vc144-mt-gd-x64-1_85.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\fmtd.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\libcrypto-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\libssl-3-x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\sast-link.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\slint_cpp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Release\spdlogd.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\..\build\src\Tray\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\..\{#MyAppFileDir}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\{#MyAppFileDir}\{#MyAppTrayExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\..\{#MyAppFileDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

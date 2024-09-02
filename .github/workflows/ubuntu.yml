@@ -72,18 +72,23 @@ jobs:
         vcpkgConfigurationJsonGlob: 'vcpkg-configuration.json'
         vcpkgJsonGlob: 'vcpkg.json'
 
+    - name: setup Ninja
+      uses: ashutoshvarma/setup-ninja@v1.1
+      with:
+        version: "1.11.1"
+
     - name: Build with CMake
       uses: lukka/run-cmake@v10
       with:
         configurePreset: 'native'
         buildPreset: 'native-release'
 
-    - name: package
-      run: |
-        echo "[Desktop Entry]" > sast-evento-appimage.desktop
-        echo "Categories=Education;" >> sast-evento-appimage.desktop
-        echo "Icon=evento" >> sast-evento-appimage.desktop
-        echo "Name=SAST Evento" >> sast-evento-appimage.desktop
-        echo "Type=Application" >> sast-evento-appimage.desktop
-        echo "Exec=sast-evento" >> sast-evento-appimage.desktop
-        linuxdeploy-x86_64.AppImage --plugin=qt --output=appimage --desktop-file=sast-evento-appimage.desktop --icon-file=ui/assets/image/icon/evento.svg --executable=build/src/Release/sast-evento --appdir AppDir
+    # - name: package
+    #   run: |
+    #     echo "[Desktop Entry]" > sast-evento-appimage.desktop
+    #     echo "Categories=Education;" >> sast-evento-appimage.desktop
+    #     echo "Icon=evento" >> sast-evento-appimage.desktop
+    #     echo "Name=SAST Evento" >> sast-evento-appimage.desktop
+    #     echo "Type=Application" >> sast-evento-appimage.desktop
+    #     echo "Exec=sast-evento" >> sast-evento-appimage.desktop
+    #     linuxdeploy-x86_64.AppImage --plugin=qt --output=appimage --desktop-file=sast-evento-appimage.desktop --icon-file=ui/assets/image/icon/evento.svg --executable=build/src/Release/sast-evento --appdir AppDir

@@ -15,7 +15,10 @@ project(sast-evento VERSION ${VERSION_SEMANTIC} LANGUAGES CXX)
 
 option(EVENTO_EMBED_RESOURCES OFF "Request slint embed resources")
 set(SLINT_STYLE "material" CACHE STRING "Slint style" FORCE)
-set(SLINT_BACKEND "winit" CACHE STRING "Slint backend" FORCE)
+
+if (MSVC)
+  set(SLINT_BACKEND "winit" CACHE STRING "Slint backend" FORCE)
+endif()
 
 if (WIN32)
   set(VERSION_RC_PATH ${CMAKE_SOURCE_DIR}/sast-evento.rc)

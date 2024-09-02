@@ -61,6 +61,11 @@ jobs:
         vcpkgConfigurationJsonGlob: 'vcpkg-configuration.json'
         vcpkgJsonGlob: 'vcpkg.json'
 
+    - name: setup Ninja
+      uses: ashutoshvarma/setup-ninja@v1.1
+      with:
+        version: "1.11.1"
+
     - name: Build with CMake
       uses: lukka/run-cmake@v10
       with:

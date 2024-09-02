@@ -27,12 +27,12 @@ jobs:
       with:
           submodules: recursive
 
-    - name: Setup Rust toolchain
-      uses: moonrepo/setup-rust@v1
-      with:
-        channel: stable
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    # - name: Setup Rust toolchain
+    #   uses: moonrepo/setup-rust@v1
+    #   with:
+    #     channel: stable
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
 
     - name: Cache corrosion
       uses: actions/cache@v4
@@ -61,13 +61,23 @@ jobs:
         vcpkgConfigurationJsonGlob: 'vcpkg-configuration.json'
         vcpkgJsonGlob: 'vcpkg.json'
 
+    - name: setup Ninja
+      uses: ashutoshvarma/setup-ninja@v1.1
+      with:
+        version: "1.11.1"
+
     - name: Build with CMake
       uses: lukka/run-cmake@v10
       with:
-        configurePreset: 'msvc-x64'
+        configurePreset: 'native'
         buildPreset: 'native-release'
 
-    - name: Package with Inno-Setup
+    - name: package
+      shell: pwsh
+      run: |
+        & scripts\windows-publish.ps1
+
+    - name: Inno Setup
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
       with:
         path: ./action-cli/InstallerScript.iss
