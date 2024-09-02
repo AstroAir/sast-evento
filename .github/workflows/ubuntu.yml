@@ -58,6 +58,11 @@ jobs:
         cache: true
         arch: ${{ matrix.qt_arch }}
 
+    - name: install Qt linux deploy
+      uses: miurahr/install-linuxdeploy-action@v1
+      with:
+        plugins: qt appimage
+
     - name: Setup CMake
       uses: lukka/get-cmake@latest
 
@@ -72,3 +77,13 @@ jobs:
       with:
         configurePreset: 'native'
         buildPreset: 'native-release'
+
+    - name: package
+      run: |
+        echo "[Desktop Entry]" > sast-evento-appimage.desktop
+        echo "Categories=Education;" >> sast-evento-appimage.desktop
+        echo "Icon=evento" >> sast-evento-appimage.desktop
+        echo "Name=SAST Evento" >> sast-evento-appimage.desktop
+        echo "Type=Application" >> sast-evento-appimage.desktop
+        echo "Exec=sast-evento" >> sast-evento-appimage.desktop
+        linuxdeploy-x86_64.AppImage --plugin=qt --output=appimage --desktop-file=sast-evento-appimage.desktop --icon-file=ui/assets/image/icon/evento.svg --executable=build/src/Release/sast-evento --appdir AppDir
