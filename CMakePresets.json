@@ -8,7 +8,7 @@
     "configurePresets": [
         {
             "name": "base",
-            "hidden": false,
+            "hidden": true,
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build",
             "installDir": "${sourceDir}/build/install/${presetName}",
@@ -22,7 +22,7 @@
         {
             "name": "msvc",
             "inherits": "base",
-            "hidden": false,
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe"
@@ -83,29 +83,6 @@
             "name": "native-relwithdebinfo",
             "inherits": "native",
             "displayName": "Native RelWithDebInfo",
-            "configuration": "RelWithDebInfo"
-        },
-        {
-            "name": "msvc-x64",
-            "configurePreset": "msvc-x64",
-            "displayName": "Ninja Multi-Config"
-        },
-        {
-            "name": "msvc-x64-debug",
-            "inherits": "msvc-x64",
-            "displayName": "MSVC-x64 Debug",
-            "configuration": "Debug"
-        },
-        {
-            "name": "msvc-x64-release",
-            "inherits": "msvc-x64",
-            "displayName": "MSVC-x64 Release",
-            "configuration": "Release"
-        },
-        {
-            "name": "msvc-x64-relwithdebinfo",
-            "inherits": "msvc-x64",
-            "displayName": "MSVC-x64 RelWithDebInfo",
             "configuration": "RelWithDebInfo"
         }
     ],
