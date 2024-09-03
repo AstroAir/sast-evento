@@ -118,12 +118,16 @@ jobs:
         }
         cmake --preset native -DRust_CARGO_TARGET=${{ matrix.rust_target }} @additionalConfigureArgs
         cmake --build --preset native-release
+        echo winSdkDir=$env:WindowsSdkDir >> $env:GITHUB_ENV
+        echo winSdkVer=$env:WindowsSdkVersion >> $env:GITHUB_ENV
+        echo vcToolsInstallDir=$env:VCToolsInstallDir >> $env:GITHUB_ENV
+        echo vcToolsRedistDir=$env:VCToolsRedistDir >> $env:GITHUB_ENV
 
     - name: Package on Windows
       if: startsWith(matrix.rid, 'win-')
       shell: pwsh
       run: |
-        & scripts\windows-publish.ps1
+        & scripts\windows-publish.ps1 ${{ matrix.rid }}
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
