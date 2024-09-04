@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rid: [linux-x64, win-x64, win-arm64]
+        rid: [linux-x64, win-x64, win-arm64, macos-x64, macos-arm64]
         include:
         - rid: linux-x64
           rust_target: x86_64-unknown-linux-gnu
@@ -31,6 +31,14 @@ jobs:
           qt_host_arch: 'win64_msvc2019_64'
           qt_arch: 'win64_msvc2019_arm64'
           os: windows-latest
+        - rid: macos-x64
+          rust_target: x86_64-apple-darwin
+          qt_arch: 'clang_64'
+          os: macos-13
+        - rid: macos-arm64
+          rust_target: aarch64-apple-darwin
+          qt_arch: 'clang_64'
+          os: macos-13-arm64
 
     steps:
     - name: Checkout repository
