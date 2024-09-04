@@ -143,9 +143,25 @@ jobs:
       shell: pwsh
       run: scripts\windows-publish.ps1
 
+    - uses: actions/upload-artifact@v2
+      if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
+      with:
+        name: sast-evento-${{ matrix.rid }}
+        path: dist
+
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
       with:
         path: ./action-cli/InstallerScript.iss
         options: /O+
+
+    - name: Upload Windows Release
+      if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./action-cli/installer.exe
+        asset_name: sast-evento-${{ matrix.rid }}.exe
+        tag: ${{ github.ref }}
+        overwrite: true 
