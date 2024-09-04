@@ -40,7 +40,7 @@ jobs:
 
     - name: Set up GCC
       if: startsWith(matrix.rid, 'linux-')
-      uses: egor-tensin/setup-gcc@v1
+      uses: egor-tensin/setup-gcc@v1.3
       with:
         version: 14
         platform: x64
@@ -99,6 +99,13 @@ jobs:
         version: ${{ env.QT_VERSION }}
         arch: ${{ matrix.qt_arch }}
         cache: true
+      
+    - name: Install Windows SDK for arm64
+      if: matrix.rid == 'win-arm64'
+      uses: ChristopheLav/windows-sdk-install@v1
+      with:
+        version-sdk: 26100
+        features: OptionId.DesktopCPParm64
 
     - name: Build
       shell: pwsh
@@ -118,18 +125,19 @@ jobs:
         }
         cmake --preset native -DRust_CARGO_TARGET=${{ matrix.rust_target }} @additionalConfigureArgs
         cmake --build --preset native-release
-        echo winSdkDir=$env:WindowsSdkDir >> $env:GITHUB_ENV
-        echo winSdkVer=$env:WindowsSdkVersion >> $env:GITHUB_ENV
-        echo vcToolsInstallDir=$env:VCToolsInstallDir >> $env:GITHUB_ENV
-        echo vcToolsRedistDir=$env:VCToolsRedistDir >> $env:GITHUB_ENV
+        if ($rid.StartsWith('win-')) {
+          echo winSdkDir=$env:WindowsSdkDir >> $env:GITHUB_ENV
+          echo winSdkVer=$env:WindowsSdkVersion >> $env:GITHUB_ENV
+          echo vcToolsInstallDir=$env:VCToolsInstallDir >> $env:GITHUB_ENV
+          echo vcToolsRedistDir=$env:VCToolsRedistDir >> $env:GITHUB_ENV
+        }
 
     - name: Package on Windows
       if: startsWith(matrix.rid, 'win-')
       env:
         msvcArch: ${{ matrix.msvc_arch }}
       shell: pwsh
-      run: |
-        & scripts\windows-publish.ps1 sast-evento-${{ matrix.rid }}
+      run: scripts\windows-publish.ps1
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
