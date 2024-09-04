@@ -42,6 +42,10 @@ jobs:
       with:
           submodules: recursive
 
+    - name: Git Version
+      id: version
+      uses: codacy/git-version@2.7.1
+
     - name: Set up GCC
       if: startsWith(matrix.rid, 'linux-')
       uses: egor-tensin/setup-gcc@v1.3
@@ -136,18 +140,45 @@ jobs:
           echo vcToolsRedistDir=$env:VCToolsRedistDir >> $env:GITHUB_ENV
         }
 
-    - name: Package on Windows
+    - name: Package for Windows
       if: startsWith(matrix.rid, 'win-')
       env:
         msvcArch: ${{ matrix.msvc_arch }}
       shell: pwsh
       run: scripts\windows-publish.ps1
 
+    - name: Package for Debian
+      if: matrix.rid == 'linux-x64'
+      shell: bash
+      run: |
+        mkdir -p sast-evento/DEBIAN
+        touch sast-evento/DEBIAN/control
+        echo "Package: sast-evento" >> control
+        echo "Version: ${{ steps.version.outputs.version }}" >> sast-evento/DEBIAN/control
+        echo "Section: custom" >> sast-evento/DEBIAN/control
+        echo "Priority: optional" >> sast-evento/DEBIAN/control
+        echo "Architecture: amd64" >> sast-evento/DEBIAN/control
+        echo "Essential: no" >> sast-evento/DEBIAN/control
+        echo "Maintainer: sast.fun" >> sast-evento/DEBIAN/control
+        echo "Description: Event management system of NJUPT-SAST made with slint-ui" >> sast-evento/DEBIAN/control
+        mkdir -p sast-evento/usr/bin
+        mkdir -p sast-evento/usr/lib
+        cp build/src/Release/sast-evento sast-evento/usr/bin
+        cp build/src/Tray/Release/sast-evento-tray sast-evento/usr/bin
+        cp build/src/Release/*.so sast-evento/usr/lib
+        dpkg-deb --build sast-evento
+
     - uses: actions/upload-artifact@v2
       if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
       with:
         name: sast-evento-${{ matrix.rid }}
         path: dist
+
+    - uses: actions/upload-artifact@v2
+      if: startsWith(github.event.ref, 'refs/tags/') && matrix.rid == 'linux-x64'
+      with:
+        name: sast-evento-${{ matrix.rid }}-deb
+        path: sast-evento.deb
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
@@ -163,5 +194,15 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./action-cli/installer.exe
         asset_name: sast-evento-${{ matrix.rid }}.exe
+        tag: ${{ github.ref }}
+        overwrite: true 
+
+    - name: Upload Linux Release (deb)
+      if: startsWith(github.event.ref, 'refs/tags/') && matrix.rid == 'linux-x64'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: sast-evento.deb
+        asset_name: sast-evento-x64.deb
         tag: ${{ github.ref }}
         overwrite: true 
