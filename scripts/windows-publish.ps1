@@ -16,7 +16,10 @@ function Main() {
     Copy-Item build\src\Release\* dist -Force -Recurse | Out-Null
     Copy-Item build\src\Tray\Release\* dist -Force -Recurse | Out-Null
     # 拷贝依赖
-    $windeployqt = Join-Path -Path $env:QT_HOST_PATH -ChildPath 'bin\windeployqt'
+    $windeployqt = 'windeployqt'
+    if (${env:QT_HOST_PATH}.Length -eq 0) {
+        $windeployqt = Join-Path -Path ${env:QT_HOST_PATH} -ChildPath 'bin\windeployqt'
+    }
     & $windeployqt dist\sast-evento-tray.exe
     # 删除不必要的文件
     $excludeList = @("*.qmlc", "*.ilk", "*.exp", "*.lib", "*.pdb")
@@ -28,7 +31,7 @@ function Main() {
     $sdkDll="{0}Redist\{1}ucrt\DLLs\{2}\*.dll" -f $env:winSdkDir.Trim(),$env:winSdkVer.Trim(),$env:msvcArch
     Copy-Item $sdkDll dist\
     # 打包zip
-    Compress-Archive -Path dist 'sast-evento-'$env:msvcArch'.zip'
+    Compress-Archive -Path dist "sast-evento-$env:msvcArch.zip"
 }
 
 Main
