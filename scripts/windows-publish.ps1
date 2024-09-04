@@ -31,7 +31,7 @@ function Main() {
     Copy-Item build\src\Release\* dist -Force -Recurse | Out-Null
     Copy-Item build\src\Tray\Release\* dist -Force -Recurse | Out-Null
     # 拷贝依赖
-    $windeployqt = Join-Path -Path $env:QT_ROOT_DIR -ChildPath 'bin\windeployqt.exe'
+    $windeployqt = Join-Path -Path $env:QT_HOST_PATH -ChildPath 'bin\windeployqt'
     & $windeployqt dist\sast-evento-tray.exe
     # 删除不必要的文件
     $excludeList = @("*.qmlc", "*.ilk", "*.exp", "*.lib", "*.pdb")

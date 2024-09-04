@@ -62,7 +62,7 @@ jobs:
           !${{ github.workspace }}/build/*/cargo/build/**/incremental
           ${{ github.workspace }}/build/corrosion/**/target
           !${{ github.workspace }}/build/corrosion/**/target/**/incremental
-        key: corrosion-${{ runner.os }}
+        key: corrosion-${{ matrix.rid }}
 
     - name: Setup CMake
       uses: lukka/get-cmake@latest
