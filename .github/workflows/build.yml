@@ -125,12 +125,11 @@ jobs:
 
     - name: Package on Windows
       if: startsWith(matrix.rid, 'win-')
+      env:
+        msvcArch: ${{ matrix.msvc_arch }}
       shell: pwsh
       run: |
-        if ('${{ matrix.rid }}' -eq 'win-arm64') {
-          $env:PATH += ";D:\a\sast-evento\Qt\6.6.3\msvc2019_arm64\bin\"
-        }
-        & scripts\windows-publish.ps1 ${{ matrix.rid }}
+        & scripts\windows-publish.ps1 sast-evento-${{ matrix.rid }}
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
