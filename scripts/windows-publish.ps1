@@ -17,7 +17,7 @@ function Main() {
     Copy-Item build\src\Tray\Release\* dist -Force -Recurse | Out-Null
     # 拷贝依赖
     $windeployqt = 'windeployqt'
-    if (${env:QT_HOST_PATH}.Length -eq 0) {
+    if (${env:QT_HOST_PATH}.Length -ne 0) {
         $windeployqt = Join-Path -Path ${env:QT_HOST_PATH} -ChildPath 'bin\windeployqt'
     }
     & $windeployqt dist\sast-evento-tray.exe
