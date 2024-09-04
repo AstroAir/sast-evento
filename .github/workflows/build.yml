@@ -34,11 +34,11 @@ jobs:
         - rid: macos-x64
           rust_target: x86_64-apple-darwin
           qt_arch: 'clang_64'
-          os: macos-13
+          os: macos-14
         - rid: macos-arm64
           rust_target: aarch64-apple-darwin
           qt_arch: 'clang_64'
-          os: macos-13-arm64
+          os: macos-14-arm64
 
     steps:
     - name: Checkout repository
