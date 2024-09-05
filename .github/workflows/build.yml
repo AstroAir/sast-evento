@@ -153,20 +153,49 @@ jobs:
       run: |
         mkdir -p sast-evento/DEBIAN
         touch sast-evento/DEBIAN/control
-        echo "Package: sast-evento" >> sast-evento/DEBIANcontrol
-        echo "Version: ${{ steps.version.outputs.version }}" >> sast-evento/DEBIAN/control
-        echo "Architecture: amd64" >> sast-evento/DEBIAN/control
-        echo "Priority: optional" >> sast-evento/DEBIAN/control
-        echo "Essential: no" >> sast-evento/DEBIAN/control
-        echo "Depends: qt6-base-dev" >> sast-evento/DEBIAN/control
-        echo "Maintainer: NJUPT-SAST-C++" >> sast-evento/DEBIAN/control
-        echo "Description: Event management system of NJUPT-SAST made with slint-ui" >> sast-evento/DEBIAN/control
-        cat sast-evento/DEBIAN/control
+        cat >> sast-evento/DEBIAN/control<< EOF
+        Package: sast-evento
+        Version: ${{ steps.version.outputs.version }}
+        Architecture: x64
+        Priority: optional
+        Essential: no
+        Depends: qt6-base-dev
+        Maintainer: NJUPT-SAST-C++
+        Description: An event management system developed and used by NJUPT SAST
+        EOF
         mkdir -p sast-evento/usr/bin
         mkdir -p sast-evento/usr/lib
         cp build/src/Release/sast-evento sast-evento/usr/bin
         cp build/src/Tray/Release/sast-evento-tray sast-evento/usr/bin
+        cp build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so.1 sast-evento/usr/lib
+        cp build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so sast-evento/usr/lib
+        cp build/_deps/slint-build/libslint_cpp.so sast-evento/usr/lib
         dpkg-deb --build sast-evento
+
+    - name: Package for Arch Linux (pacman)
+      if: matrix.rid == 'linux-x64'
+      shell: bash
+      run: |
+        touch PKGBUILD
+        cat >> PKGBUILD<< EOF
+        pkgname="sast-evento"
+        pkgver="${{ steps.version.outputs.version }}"
+        pkgrel="1"
+        arch=("x64")
+        depends=("qt6-base")
+        maintainer="NJUPT-SAST-C++"
+        pkgdesc="An event management system developed and used by NJUPT SAST"
+        sha512sums=("SKIP")
+        package() {
+          install -Dm755 "$srcdir/build/src/Release/sast-evento" "/usr/bin/sast-evento"
+          install -Dm755 "$srcdir/build/src/Tray/Release/sast-evento-tray" "/usr/bin/sast-evento-tray"
+          install -Dm755 "$srcdir/build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so.1" "/usr/bin/libsast-link.so.1"
+          install -Dm755 "$srcdir/build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so" "/usr/bin/libsast-link_details.so"
+          install -Dm755 "$srcdir/build/_deps/slint-build/libslint_cpp.so" "/usr/bin/libslint_cpp.so"
+        }
+        EOF
+        cat PKGBUILD
+        
 
     - uses: actions/upload-artifact@v2
       if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
