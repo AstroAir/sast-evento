@@ -155,13 +155,13 @@ jobs:
         touch sast-evento/DEBIAN/control
         echo "Package: sast-evento" >> control
         echo "Version: ${{ steps.version.outputs.version }}" >> sast-evento/DEBIAN/control
-        echo "Section: custom" >> sast-evento/DEBIAN/control
-        echo "Priority: optional" >> sast-evento/DEBIAN/control
         echo "Architecture: amd64" >> sast-evento/DEBIAN/control
+        echo "Priority: optional" >> sast-evento/DEBIAN/control
         echo "Essential: no" >> sast-evento/DEBIAN/control
         echo "Depends: qt6-base-dev" >> sast-evento/DEBIAN/control
         echo "Maintainer: NJUPT-SAST-C++" >> sast-evento/DEBIAN/control
         echo "Description: Event management system of NJUPT-SAST made with slint-ui" >> sast-evento/DEBIAN/control
+        cat sast-evento/DEBIAN/control
         mkdir -p sast-evento/usr/bin
         mkdir -p sast-evento/usr/lib
         cp build/src/Release/sast-evento sast-evento/usr/bin
