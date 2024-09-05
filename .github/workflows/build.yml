@@ -153,7 +153,7 @@ jobs:
       run: |
         mkdir -p sast-evento/DEBIAN
         touch sast-evento/DEBIAN/control
-        echo "Package: sast-evento" >> control
+        echo "Package: sast-evento" >> sast-evento/DEBIANcontrol
         echo "Version: ${{ steps.version.outputs.version }}" >> sast-evento/DEBIAN/control
         echo "Architecture: amd64" >> sast-evento/DEBIAN/control
         echo "Priority: optional" >> sast-evento/DEBIAN/control
