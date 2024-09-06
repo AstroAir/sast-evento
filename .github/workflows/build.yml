@@ -147,13 +147,13 @@ jobs:
       shell: pwsh
       run: scripts\windows-publish.ps1
 
-    - name: Package for Debian
+    - name: Package for deb
       if: matrix.rid == 'linux-x64'
       shell: bash
       run: |
         mkdir -p sast-evento/DEBIAN
         touch sast-evento/DEBIAN/control
-        cat >> sast-evento/DEBIAN/control<< EOF
+        cat >> sast-evento/DEBIAN/control << EOF
         Package: sast-evento
         Version: ${{ steps.version.outputs.version }}
         Architecture: x64
@@ -172,31 +172,35 @@ jobs:
         cp build/_deps/slint-build/libslint_cpp.so sast-evento/usr/lib
         dpkg-deb --build sast-evento
 
-    - name: Package for Arch Linux (pacman)
+    - name: Package for pacman
       if: matrix.rid == 'linux-x64'
       shell: bash
       run: |
         touch PKGBUILD
-        cat >> PKGBUILD<< EOF
-        pkgname="sast-evento"
-        pkgver="${{ steps.version.outputs.version }}"
-        pkgrel="1"
-        arch=("x64")
-        depends=("qt6-base")
-        maintainer="NJUPT-SAST-C++"
+        cat >> PKGBUILD << EOF
+        # Maintainer: NJUPT-SAST <sast@njupt.edu.cn>
+        _pkgname=sast-evento
+        pkgname=sast-evento-bin
+        pkgver=${{ steps.version.outputs.version }}
         pkgdesc="An event management system developed and used by NJUPT SAST"
-        sha512sums=("SKIP")
+        arch=(x86_64)
+        url="https://github.com/NJUPT-SAST-CPP/sast-evento"
+        license=(MIT)
+        depends=(qt6-base)
+        provides=($_pkgname)
+        conflicts=($_pkgname)
+        replaces=(sast-evento-appimage)
         package() {
-          install -Dm755 "$srcdir/build/src/Release/sast-evento" "/usr/bin/sast-evento"
-          install -Dm755 "$srcdir/build/src/Tray/Release/sast-evento-tray" "/usr/bin/sast-evento-tray"
-          install -Dm755 "$srcdir/build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so.1" "/usr/bin/libsast-link.so.1"
-          install -Dm755 "$srcdir/build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so" "/usr/bin/libsast-link_details.so"
-          install -Dm755 "$srcdir/build/_deps/slint-build/libslint_cpp.so" "/usr/bin/libslint_cpp.so"
+          install -Dm755 "$srcdir/../build/src/Release/sast-evento" "$pkgdir/usr/bin/sast-evento"
+          install -Dm755 "$srcdir/../build/src/Tray/Release/sast-evento-tray" "$pkgdir/usr/bin/sast-evento-tray"
+          install -Dm644 "$srcdir/../build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so" "$pkgdir/usr/lib/libsast-link.so"
+          install -Dm644 "$srcdir/../build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so" "$pkgdir/usr/lib/libsast-link_details.so"
+          install -Dm644 "$srcdir/../build/_deps/slint-build/libslint_cpp.so" "$pkgdir/usr/lib/libslint_cpp.so"
         }
         EOF
         cat PKGBUILD
+        makepkg
         
-
     - uses: actions/upload-artifact@v2
       if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
       with:
@@ -208,6 +212,12 @@ jobs:
       with:
         name: sast-evento-${{ matrix.rid }}-deb
         path: sast-evento.deb
+
+    - uses: actions/upload-artifact@v2
+      if: startsWith(github.event.ref, 'refs/tags/') && matrix.rid == 'linux-x64'
+      with:
+        name: sast-evento-bin-${{ steps.version.outputs.version }}-x86_64.pkg.tar.zst
+        path: sast-evento-bin-${{ steps.version.outputs.version }}-x86_64.pkg.tar.zst
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
@@ -232,6 +242,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: sast-evento.deb
-        asset_name: sast-evento-x64.deb
+        asset_name: sast-evento-${{ matrix.rid }}.deb
         tag: ${{ github.ref }}
         overwrite: true 
