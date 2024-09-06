@@ -176,10 +176,10 @@ jobs:
       if: matrix.rid == 'linux-x64'
       shell: bash
       run: |
+        sudo apt install makepkg
         touch PKGBUILD
         cat >> PKGBUILD << EOF
         # Maintainer: NJUPT-SAST <sast@njupt.edu.cn>
-        _pkgname=sast-evento
         pkgname=sast-evento-bin
         pkgver=${{ steps.version.outputs.version }}
         pkgdesc="An event management system developed and used by NJUPT SAST"
@@ -187,15 +187,15 @@ jobs:
         url="https://github.com/NJUPT-SAST-CPP/sast-evento"
         license=(MIT)
         depends=(qt6-base)
-        provides=($_pkgname)
-        conflicts=($_pkgname)
+        provides=(sast-evento)
+        conflicts=(sast-evento)
         replaces=(sast-evento-appimage)
         package() {
-          install -Dm755 "$srcdir/../build/src/Release/sast-evento" "$pkgdir/usr/bin/sast-evento"
-          install -Dm755 "$srcdir/../build/src/Tray/Release/sast-evento-tray" "$pkgdir/usr/bin/sast-evento-tray"
-          install -Dm644 "$srcdir/../build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so" "$pkgdir/usr/lib/libsast-link.so"
-          install -Dm644 "$srcdir/../build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so" "$pkgdir/usr/lib/libsast-link_details.so"
-          install -Dm644 "$srcdir/../build/_deps/slint-build/libslint_cpp.so" "$pkgdir/usr/lib/libslint_cpp.so"
+          install -Dm755 "\$srcdir/../build/src/Release/sast-evento" "\$pkgdir/usr/bin/sast-evento"
+          install -Dm755 "\$srcdir/../build/src/Tray/Release/sast-evento-tray" "\$pkgdir/usr/bin/sast-evento-tray"
+          install -Dm644 "\$srcdir/../build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.so" "\$pkgdir/usr/lib/libsast-link.so"
+          install -Dm644 "\$srcdir/../build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.so" "\$pkgdir/usr/lib/libsast-link_details.so"
+          install -Dm644 "\$srcdir/../build/_deps/slint-build/libslint_cpp.so" "\$pkgdir/usr/lib/libslint_cpp.so"
         }
         EOF
         cat PKGBUILD
