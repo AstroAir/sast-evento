@@ -42,10 +42,6 @@ jobs:
       with:
           submodules: recursive
 
-    - name: Git Version
-      id: version
-      uses: codacy/git-version@2.7.1
-
     - name: Set up GCC
       if: startsWith(matrix.rid, 'linux-')
       uses: egor-tensin/setup-gcc@v1.3
@@ -155,7 +151,7 @@ jobs:
         touch sast-evento/DEBIAN/control
         cat >> sast-evento/DEBIAN/control << EOF
         Package: sast-evento
-        Version: ${{ steps.version.outputs.version }}
+        Version: ${{ github.ref_name }}
         Architecture: x64
         Priority: optional
         Essential: no
@@ -181,7 +177,7 @@ jobs:
         cat >> PKGBUILD << EOF
         # Maintainer: NJUPT-SAST <sast@njupt.edu.cn>
         pkgname=sast-evento-bin
-        pkgver=${{ steps.version.outputs.version }}
+        pkgver=${{ github.ref_name }}
         pkgdesc="An event management system developed and used by NJUPT SAST"
         arch=(x86_64)
         url="https://github.com/NJUPT-SAST-CPP/sast-evento"
@@ -216,8 +212,8 @@ jobs:
     - uses: actions/upload-artifact@v2
       if: startsWith(github.event.ref, 'refs/tags/') && matrix.rid == 'linux-x64'
       with:
-        name: sast-evento-bin-${{ steps.version.outputs.version }}-x86_64.pkg.tar.zst
-        path: sast-evento-bin-${{ steps.version.outputs.version }}-x86_64.pkg.tar.zst
+        name: sast-evento-bin-${{ github.ref_name }}-x86_64.pkg.tar.zst
+        path: sast-evento-bin-${{ github.ref_name }}-x86_64.pkg.tar.zst
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
