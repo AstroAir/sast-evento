@@ -139,14 +139,14 @@ jobs:
         }
 
     - name: Package for Windows
-      if: startsWith(matrix.rid, 'win-')
+      if: startsWith(matrix.rid, 'win-') && startsWith(github.event.ref, 'refs/tags/')
       env:
         msvcArch: ${{ matrix.msvc_arch }}
       shell: pwsh
       run: scripts\windows-publish.ps1
 
     - name: Package for deb
-      if: matrix.rid == 'linux-x64'
+      if: matrix.rid == 'linux-x64' && startsWith(github.event.ref, 'refs/tags/')
       shell: bash
       run: |
         mkdir -p sast-evento/DEBIAN
@@ -171,7 +171,7 @@ jobs:
         dpkg-deb --build sast-evento
 
     - name: Package for pacman
-      if: matrix.rid == 'linux-x64'
+      if: matrix.rid == 'linux-x64' && startsWith(github.event.ref, 'refs/tags/')
       shell: bash
       run: |
         sudo apt install makepkg
@@ -218,7 +218,7 @@ jobs:
         path: sast-evento-bin-${{ github.ref_name }}-x86_64.pkg.tar.zst
 
     - name: Inno Setup
-      if: startsWith(matrix.rid, 'win-')
+      if: startsWith(github.event.ref, 'refs/tags/') && startsWith(matrix.rid, 'win-')
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
       with:
         path: ./action-cli/InstallerScript.iss
