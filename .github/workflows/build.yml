@@ -227,6 +227,14 @@ jobs:
       with:
         target: 'pkgbuild'
         pkgname: build-aux/sast-evento-bin/
+
+    - name: Package for MacOS (Homebrew)
+      if: matrix.rid == 'macos'
+      shell: bash
+      run: |
+        touch sast-evento.rb
+        cat >> sast-evento.rb << EOF
+        EOF
         
     - uses: actions/upload-artifact@v4
       if: startsWith(matrix.rid, 'win-')
