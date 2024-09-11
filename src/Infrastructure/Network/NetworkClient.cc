@@ -22,7 +22,8 @@ constexpr const char MIME_FORM_URL_ENCODED[] = "application/x-www-form-urlencode
 
 NetworkClient::NetworkClient(net::ssl::context& ctx)
     : _ctx(ctx)
-    , _httpsAccessManager(std::make_unique<HttpsAccessManager>(_ctx, true)) {}
+    , _httpsAccessManager(std::make_unique<HttpsAccessManager>(_ctx, true))
+    , _cacheManager(std::make_unique<CacheManager>()) {}
 
 NetworkClient* NetworkClient::getInstance() {
     static ssl::context ctx(ssl::context::sslv23);
@@ -369,7 +370,7 @@ Task<Result<SlideEntityList>> NetworkClient::getEventSlide(
 Task<Result<DepartmentEntityList>> NetworkClient::getDepartmentList(
     std::chrono::steady_clock::duration cacheTtl) {
     auto result = co_await this->request<api::Evento>(http::verb::get,
-                                                      endpoint("v2/client/lark/department"),
+                                                      endpoint("/v2/client/lark/department"),
                                                       {},
                                                       cacheTtl);
     if (result.isErr())
