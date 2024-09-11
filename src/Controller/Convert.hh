@@ -6,6 +6,7 @@
 #include <spdlog/spdlog.h>
 #include <string>
 #include <vector>
+#include <chrono>
 
 namespace evento::convert {
 
