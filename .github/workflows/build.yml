@@ -228,30 +228,22 @@ jobs:
         target: 'pkgbuild'
         pkgname: build-aux/sast-evento-bin/
 
-    # - name: Package for MacOS (Homebrew)
-    #   if: matrix.rid == 'macos'
-    #   shell: bash
-    #   run: |
-    #     touch sast-evento.rb
-    #     cat >> sast-evento.rb << EOF
-    #     class SastEvento < Formula
-    #       desc "An event management system developed and used by NJUPT SAST"
-    #       homepage "evento.sast.fun"
-    #       url "https://github.com/NJUPT-SAST/sast-evento/releases/tag/${{ github.ref_name }}/sast-evento-${{ github.ref_name }}-${{ matrix.rid }}.tar.gz"
-    #       sha256 "SKIP"
-    #       license "MIT"
-    #       depends_on "qt@6"
 
-    #       def install
-    #         bin.install "sast-evento"
-    #         bin.install "sast-evento-tray"
-    #         lib.install "libsast-link.so"
-    #         lib.install "libsast-link_details.so"
-    #         lib.install "libslint_cpp.so"
-    #         lib.install "libsast-link_details.so"
-    #       end
-    #     end
-    #     EOF
+    - name: Prepare .app
+      if: matrix.rid == 'macos'
+      shell: bash
+      run: |
+        cp build/3rdpart/sast-link-cxx-sdk/Release/libsast-link.dylib build/src/Release/sast-evento.app/Contents/Frameworks/
+        cp build/3rdpart/sast-link-cxx-sdk/src/details/Release/libsast-link_details.dylib build/src/Release/sast-evento.app/Contents/Frameworks/
+        cp build/_deps/slint-build/libslint_cpp.dylib build/src/Release/sast-evento.app/Contents/Frameworks/
+        cp build/src/Tray/Release/sast-evento-tray.app/Contents/MacOS/sast-evento-tray build/src/Release/sast-evento.app/Contents/Frameworks/
+
+    - name: Package for macos (dmg)
+      if: matrix.rid == 'macos'
+      uses: L-Super/create-dmg-actons@v1.0.3
+      with:
+        dmg_name: 'sast-evento'
+        src_dir: 'build/src/Release/sast-evento.app'
         
     - uses: actions/upload-artifact@v4
       if: startsWith(matrix.rid, 'win-')
@@ -270,6 +262,12 @@ jobs:
       with:
         name: sast-evento-bin-${{ github.ref_name }}-x86_64.pkg.tar.zst
         path: build-aux/sast-evento-bin/sast-evento*
+
+    - uses: actions/upload-artifact@v4
+      if: matrix.rid == 'macos'
+      with:
+        name: sast-evento-${{ github.ref_name }}-aarch64.dmg
+        path: ./sast-evento.dmg
 
     - name: Inno Setup
       if: startsWith(matrix.rid, 'win-')
@@ -304,5 +302,15 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./build-aux/sast-evento-bin/sast-evento-bin-${{ github.ref_name }}-1-x86_64.pkg.tar.zst
+        tag: ${{ github.ref }}
+        overwrite: true 
+
+    - name: Upload Linux Release (pacman)
+      if: matrix.rid == 'linux-x64'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./sast-evento.dmg
+        asset_name: sast-evento-${{ github.ref_name }}-aarch64.dmg
         tag: ${{ github.ref }}
         overwrite: true 
