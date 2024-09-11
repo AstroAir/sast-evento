@@ -228,13 +228,30 @@ jobs:
         target: 'pkgbuild'
         pkgname: build-aux/sast-evento-bin/
 
-    - name: Package for MacOS (Homebrew)
-      if: matrix.rid == 'macos'
-      shell: bash
-      run: |
-        touch sast-evento.rb
-        cat >> sast-evento.rb << EOF
-        EOF
+    # - name: Package for MacOS (Homebrew)
+    #   if: matrix.rid == 'macos'
+    #   shell: bash
+    #   run: |
+    #     touch sast-evento.rb
+    #     cat >> sast-evento.rb << EOF
+    #     class SastEvento < Formula
+    #       desc "An event management system developed and used by NJUPT SAST"
+    #       homepage "evento.sast.fun"
+    #       url "https://github.com/NJUPT-SAST/sast-evento/releases/tag/${{ github.ref_name }}/sast-evento-${{ github.ref_name }}-${{ matrix.rid }}.tar.gz"
+    #       sha256 "SKIP"
+    #       license "MIT"
+    #       depends_on "qt@6"
+
+    #       def install
+    #         bin.install "sast-evento"
+    #         bin.install "sast-evento-tray"
+    #         lib.install "libsast-link.so"
+    #         lib.install "libsast-link_details.so"
+    #         lib.install "libslint_cpp.so"
+    #         lib.install "libsast-link_details.so"
+    #       end
+    #     end
+    #     EOF
         
     - uses: actions/upload-artifact@v4
       if: startsWith(matrix.rid, 'win-')
