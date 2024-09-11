@@ -11,13 +11,14 @@ slint::SharedString convertTimeRange(const std::string& startTimeStr,
     std::istringstream ssStart(startTimeStr);
     std::istringstream ssEnd(endTimeStr);
     std::chrono::sys_seconds startTp, endTp;
+    using namespace std;
 
-    ssStart >> std::chrono::parse("%Y-%m-%dT%H:%M:%SZ", startTp);
+    ssStart >> parse("%Y-%m-%dT%H:%M:%SZ", startTp);
     if (ssStart.fail()) {
         spdlog::warn("Failed to parse start-time string: {}", startTimeStr);
         return " ";
     }
-    ssEnd >> std::chrono::parse("%Y-%m-%dT%H:%M:%SZ", endTp);
+    ssEnd >> parse("%Y-%m-%dT%H:%M:%SZ", endTp);
     if (ssEnd.fail()) {
         spdlog::warn("Failed to parse end-time string: {}", endTimeStr);
         return " ";
