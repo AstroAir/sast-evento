@@ -45,9 +45,6 @@ if (APPLE)
   set(MACOSX_BUNDLE_ICON_FILE ${ICON_NAME})
   set_property(SOURCE "${${PROJECT_NAME}_MAC_ICON}" PROPERTY
       MACOSX_PACKAGE_LOCATION Resources)
-
-  set_property(TARGET ${PROJECT_NAME} PROPERTY
-      MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/.cmake/Info.plist.in")
 endif()
 
 # find Slint
@@ -89,6 +86,11 @@ add_subdirectory(3rdpart/sast-link-cxx-sdk)
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(3rdpart/keychain)
 set(BUILD_SHARED_LIBS ON)
+
+if (APPLE)
+  set_property(TARGET ${PROJECT_NAME} PROPERTY
+      MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/.cmake/Info.plist.in")
+endif()
 
 # install
 install(TARGETS ${PROJECT_NAME}
