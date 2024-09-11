@@ -89,10 +89,6 @@ inline slint::SharedString firstUnicode(const std::string& str) {
 
 } // namespace details
 
-inline auto from(const auto& obj) {
-    return obj;
-}
-
 inline EventStruct from(const EventEntity& entity) {
     return {
         .id = entity.id,
